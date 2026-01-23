@@ -41,6 +41,7 @@ class TraceLog(BaseModel):
     location: str
     status: str
     tx_hash: str
+    verified: Optional[bool] = None
 
     class Config:
         orm_mode = True
@@ -51,3 +52,4 @@ class ProductLatestStatus(BaseModel):
     latest_location: str
     status: str
     tx_hash: str
+    verified: Optional[bool] = None
