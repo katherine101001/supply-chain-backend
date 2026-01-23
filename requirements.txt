@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+python-dotenv
+web3
+sqlalchemy
+psycopg2-binary
+pandas
+pymysql

@@ -1,0 +1,54 @@
+@host = http://127.0.0.1:8000
+
+
+#Health check
+GET {{host}}/health
+Accept: application/json
+
+###
+
+# Get product by SKU
+GET {{host}}/product/sku0
+Accept: application/json
+
+###
+
+# GET /product/{sku}/trace
+GET {{host}}/product/sku0/trace
+Accept: application/json
+###
+GET {{host}}/product/sku10/trace
+Accept: application/json
+
+
+###
+
+# GET /product/{sku}/latest
+GET {{host}}/product/sku0/latest
+Accept: application/json
+
+###
+
+GET {{host}}/product/sku10/latest
+Accept: application/json
+
+###
+
+# GET /product/{sku}?full=true
+GET {{host}}/product/sku0?full=true
+Accept: application/json
+
+###
+
+GET {{host}}/product/sku10?full=true
+Accept: application/json
+
+###
+
+GET {{host}}/product/sku20?full=true
+Accept: application/json
+
+###
+
+GET {{host}}/product/sku40?full=true
+Accept: application/json
