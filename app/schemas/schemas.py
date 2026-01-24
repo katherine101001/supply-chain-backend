@@ -38,7 +38,7 @@ class ProductFull(ProductBase):
 # Blockchain trace log
 class TraceLog(BaseModel):
     timestamp: datetime
-    location: str
+    blockchain_network: str
     status: str
     tx_hash: str
     verified: Optional[bool] = None

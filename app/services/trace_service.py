@@ -43,7 +43,7 @@ def fetch_trace_logs(
         result.append(
             TraceLog(
                 timestamp=log.uploaded_at,
-                location=log.network,
+                blockchain_network=log.network,
                 status=current_status,
                 tx_hash=log.tx_hash,
                 verified=verified_flag  
