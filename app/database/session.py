@@ -9,12 +9,11 @@ if DB_URL and "6543" in DB_URL:
     # 关键：连接池模式下必须禁用 SQLAlchemy 本地的连接池 (NullPool)
     # 否则会和 Supabase 的连接池起冲突，导致连接失效
     engine = create_engine(DB_URL, poolclass=NullPool, echo=True)
+    print(" Using Supabase Transaction Pooler")
 else:
     # 如果是普通连接 (5432端口)，则使用默认配置
     engine = create_engine(DB_URL, echo=True)
 
-# Create SQLAlchemy engine
-engine = create_engine(DB_URL, echo=True)  # echo=True prints SQL statements, useful for debugging
 
 # Create a session factory
 SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
