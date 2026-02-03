@@ -6,6 +6,4 @@ sqlalchemy
 psycopg2-binary
 pandas
 pymysql
-psycopg2-binary
-web3 
 tqdm
