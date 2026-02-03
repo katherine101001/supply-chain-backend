@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime
+from sqlalchemy import Column, Integer, String, Float, DateTime, BigInteger
 from sqlalchemy.sql import func
 from app.database.session import Base
 
@@ -42,9 +42,9 @@ class BlockchainUploadLog(Base):
     batch_number = Column(Integer, nullable=False)
     num_records = Column(Integer, nullable=False)
     skus = Column(String, nullable=False)
-    gas_used = Column(Integer, nullable=True)
-    gas_price = Column(Integer, nullable=True)
-    tx_cost_wei = Column(Integer, nullable=True)
+    gas_used = Column(BigInteger, nullable=True)
+    gas_price = Column(BigInteger, nullable=True)
+    tx_cost_wei = Column(BigInteger, nullable=True)
     uploaded_at = Column(DateTime(timezone=True), default=func.now())
     created_at = Column(DateTime(timezone=True), default=func.now())
     tx_status = Column(Integer, default=1)  # 1=success, 0=failure
