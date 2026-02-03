@@ -1,47 +1,28 @@
-# import os
-# from dotenv import load_dotenv
-
-# # Load .env from project root
-# root_env_path = os.path.join(os.path.dirname(__file__), "..", ".env")
-# load_dotenv(dotenv_path=root_env_path, override=True)
-
-# # ---- Read environment variables ----
-# SEPOLIA_RPC_URL = os.getenv("SEPOLIA_RPC_URL")
-# CONTRACT_ADDRESS = os.getenv("CONTRACT_ADDRESS")
-# CHAIN_ID = int(os.getenv("CHAIN_ID", 11155111))
-# DB_URL = os.getenv("DB_URL")
-# PRIVATE_KEY = os.getenv("PRIVATE_KEY")
-
-# # Optional sanity check
-# print("Config loaded. DB_URL:", DB_URL)
-
 import os
 from dotenv import load_dotenv
+from sqlalchemy import create_engine
+from sqlalchemy.pool import NullPool  # <--- 新增这个导入
 
-# 1. 尝试加载 .env 文件（仅用于本地开发）
-# 使用 find_dotenv() 会更智能，它会自动往上找文件
-root_env_path = os.path.join(os.path.dirname(__file__), "..", ".env")
-if os.path.exists(root_env_path):
-    load_dotenv(dotenv_path=root_env_path, override=True)
-else:
-    # 如果找不到文件（比如在 Render 上），它会直接读取系统环境变量
-    load_dotenv() 
+# 1. 加载环境变量
+# Render 上没有 .env 文件，load_dotenv() 会自动跳过并读取系统设置
+load_dotenv()
 
 # 2. 读取变量
 SEPOLIA_RPC_URL = os.getenv("SEPOLIA_RPC_URL")
 CONTRACT_ADDRESS = os.getenv("CONTRACT_ADDRESS")
-
-# 注意：从 os.getenv 拿到的都是字符串，CHAIN_ID 需要转成 int
-chain_id_raw = os.getenv("CHAIN_ID")
-CHAIN_ID = int(chain_id_raw) if chain_id_raw else 11155111
-
-DB_URL = os.getenv("DB_URL")
 PRIVATE_KEY = os.getenv("PRIVATE_KEY")
 
-# 3. 调试日志（重要！）
-# 在 Render 的 Logs 里你会看到这一行。
-# 注意：做生意时不要 print 完整的 DB_URL（包含密码）和 PRIVATE_KEY
-if DB_URL:
-    print(f"✅ Config loaded. DB Host: {DB_URL.split('@')[-1]}") 
+# 数据库链接 (确保 Render 后台的 Key 是 DB_URL)
+DB_URL = os.getenv("DB_URL") 
+
+# 3. 创建 Engine (针对 Supabase 的关键改动)
+# 如果你使用的是 Supabase 的连接池 (端口 6543)，
+# 必须添加 poolclass=NullPool，否则连接会经常断开。
+if DB_URL and "6543" in DB_URL:
+    engine = create_engine(DB_URL, poolclass=NullPool)
 else:
-    print("❌ Error: DB_URL not found in environment variables!")
+    engine = create_engine(DB_URL)
+
+# 调试日志
+if DB_URL:
+    print(f"✅ DB Config loaded for host: {DB_URL.split('@')[-1].split('/')[0]}")
